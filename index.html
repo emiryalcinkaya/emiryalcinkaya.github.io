@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Asteroid Escape: Space Run — Support & Privacy</title>
+  <style>
+    :root {
+      --bg: #090014;
+      --bg2: #140325;
+      --panel: rgba(24, 8, 45, 0.78);
+      --panel-border: rgba(180, 140, 255, 0.16);
+      --text: #f6f1ff;
+      --muted: #cbbde7;
+      --accent: #a970ff;
+      --accent-soft: rgba(169, 112, 255, 0.18);
+      --gold: #ffcc66;
+      --shadow: 0 24px 80px rgba(0, 0, 0, 0.38);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Helvetica, Arial, sans-serif;
+      background:
+        radial-gradient(circle at 15% 20%, rgba(255, 129, 86, 0.12), transparent 18%),
+        radial-gradient(circle at 80% 16%, rgba(139, 92, 246, 0.18), transparent 16%),
+        radial-gradient(circle at 50% 75%, rgba(81, 163, 255, 0.10), transparent 22%),
+        linear-gradient(180deg, var(--bg2), var(--bg));
+      color: var(--text);
+      min-height: 100%;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        radial-gradient(2px 2px at 8% 14%, rgba(255,255,255,0.9), transparent 60%),
+        radial-gradient(1.5px 1.5px at 20% 32%, rgba(255,255,255,0.55), transparent 60%),
+        radial-gradient(2px 2px at 73% 11%, rgba(255,255,255,0.75), transparent 60%),
+        radial-gradient(1.5px 1.5px at 86% 27%, rgba(255,255,255,0.45), transparent 60%),
+        radial-gradient(2px 2px at 62% 65%, rgba(255,255,255,0.5), transparent 60%),
+        radial-gradient(1.5px 1.5px at 14% 78%, rgba(255,255,255,0.5), transparent 60%);
+      opacity: 0.7;
+    }
+
+    .wrap {
+      width: min(960px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 56px 0 72px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 10px 16px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.04);
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      backdrop-filter: blur(8px);
+    }
+
+    h1 {
+      margin: 18px 0 10px;
+      font-size: clamp(42px, 8vw, 76px);
+      line-height: 0.95;
+      letter-spacing: -0.04em;
+      font-weight: 800;
+    }
+
+    h1 span {
+      background: linear-gradient(90deg, #ffffff 0%, #e7d7ff 55%, #9dd8ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .lead {
+      width: min(760px, 100%);
+      margin: 0 auto;
+      font-size: 20px;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+
+    .stack {
+      display: grid;
+      gap: 18px;
+      margin-top: 30px;
+    }
+
+    .card {
+      position: relative;
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      border-radius: 28px;
+      padding: 30px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+      overflow: hidden;
+    }
+
+    .card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 28px;
+      pointer-events: none;
+      background: linear-gradient(
+        180deg,
+        rgba(255,255,255,0.04),
+        rgba(255,255,255,0.00) 22%
+      );
+    }
+
+    .section-label {
+      display: inline-block;
+      margin-bottom: 14px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      border: 1px solid rgba(169, 112, 255, 0.18);
+      color: #e8d8ff;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    h2 {
+      margin: 0 0 14px;
+      font-size: 34px;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+    }
+
+    p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.9;
+    }
+
+    .spacer {
+      height: 18px;
+    }
+
+    .mailbox {
+      margin-top: 22px;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 22px;
+      border-radius: 18px;
+      background: linear-gradient(180deg, #7c3aed, #5b21b6);
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 20px;
+      font-weight: 800;
+      box-shadow: 0 18px 30px rgba(124, 58, 237, 0.28);
+      transition: transform 0.16s ease, box-shadow 0.16s ease;
+      word-break: break-word;
+    }
+
+    .mailbox:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 22px 34px rgba(124, 58, 237, 0.34);
+    }
+    
+    .logo {
+      width: 72px;
+      height: 72px;
+      border-radius: 18px;
+      margin: 0 auto 14px;
+      display: block;
+
+    box-shadow:
+      0 10px 25px rgba(0,0,0,0.35),
+      0 0 12px rgba(169,112,255,0.25);
+
+    object-fit: cover;
+    }
+    
+    .policy-link,
+    .inline-mail {
+      color: #e9dcff;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    ul {
+      margin: 10px 0 0;
+      padding-left: 20px;
+      color: var(--muted);
+    }
+
+    li {
+      margin: 10px 0;
+      font-size: 17px;
+      line-height: 1.7;
+    }
+
+    .footer {
+      margin-top: 22px;
+      text-align: center;
+      color: #ab9ccf;
+      font-size: 14px;
+    }
+
+    @media (max-width: 820px) {
+      .wrap {
+        width: min(100% - 18px, 960px);
+        padding-top: 28px;
+        padding-bottom: 48px;
+      }
+
+      .two-col {
+        grid-template-columns: 1fr;
+      }
+
+      .card {
+        padding: 22px;
+        border-radius: 22px;
+      }
+
+      h2 {
+        font-size: 30px;
+      }
+
+      .lead {
+        font-size: 18px;
+      }
+
+      p, li {
+        font-size: 17px;
+      }
+
+      .mailbox {
+        width: 100%;
+        justify-content: center;
+        text-align: center;
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="hero">
+      <img src="logo.png" class="logo">
+      <div class="eyebrow">Official Support & Privacy Page</div>
+      <h1><span>Asteroid Escape: Space Run</span></h1>
+      <p class="lead">
+        Need help, found a bug, or have a privacy question?
+        You can contact us below.
+      </p>
+    </section>
+
+    <section class="stack">
+      <article class="card">
+        <div class="section-label">Contact</div>
+        <h2>Get Support</h2>
+        <p>
+          For technical issues, gameplay questions, feedback, or review-related contact,
+          please email us directly.
+        </p>
+        <a class="mailbox" href="mailto:asteroidescape.support@gmail.com">
+          ✉️ asteroidescape.support@gmail.com
+        </a>
+        <div class="spacer"></div>
+        <p>
+          We will try to respond as soon as possible.
+        </p>
+      </article>
+
+      <article class="card">
+        <div class="section-label">Privacy</div>
+        <h2>Privacy Policy</h2>
+        <p>
+          <strong>Privacy Policy for Asteroid Escape: Space Run</strong><br><br>
+
+          <strong>Last updated:</strong> April 17, 2026<br><br>
+
+          This Privacy Policy applies to the mobile game <strong>Asteroid Escape: Space Run</strong>.<br><br>
+
+          <strong>1. Information We Collect</strong><br>
+          Asteroid Escape does not require account creation and does not directly collect personal information such as your name, email address, or phone number inside the game.<br><br>
+
+          However, the app uses third-party advertising services. These services may automatically process certain device-related data, which may include:<br>
+          - Device identifiers, such as advertising identifiers<br>
+          - IP address<br>
+          - Device and operating system information<br>
+          - Ad interaction data<br>
+          - Diagnostic and performance-related data<br><br>
+
+          <strong>2. Third-Party Services</strong><br>
+          Asteroid Escape: Space Run uses <strong>Google AdMob</strong> to display advertisements. Google AdMob may process data to provide, measure, and improve ads.<br><br>
+
+          You can learn more here:<br>
+          <a class="policy-link" href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener noreferrer">
+            Google Ads Policy
+          </a><br><br>
+
+          <strong>3. How Information May Be Used</strong><br>
+          Data processed by third-party advertising services may be used for purposes such as:<br>
+          - Serving ads<br>
+          - Measuring ad performance<br>
+          - Preventing fraud and abuse<br>
+          - Improving service reliability and performance<br><br>
+
+          <strong>4. Personalized Advertising and Consent</strong><br>
+          If required by applicable law, users in certain regions, including the European Economic Area (EEA), the United Kingdom, and Switzerland, may be asked to provide consent for personalized advertising and related data use.<br><br>
+
+          <strong>5. Data Security</strong><br>
+          We do not directly store or manage personal user accounts or profiles in the app. Data processed through third-party services is handled according to those providers’ own policies and security practices.<br><br>
+
+          <strong>6. Children’s Privacy</strong><br>
+          Asteroid Escape is not directed to children under the age of 13. We do not knowingly collect personal information directly from children.<br><br>
+
+          <strong>7. Your Choices</strong><br>
+          Depending on your device settings and region, you may be able to manage advertising preferences, tracking permissions, and privacy choices through your device settings.<br><br>
+
+          <strong>8. Changes to This Policy</strong><br>
+          We may update this Privacy Policy from time to time. Any updates will be posted on this page with a revised “Last updated” date.<br><br>
+
+          <strong>9. Contact</strong><br>
+          If you have any questions about this Privacy Policy or need support, you can contact us at:<br>
+          <a class="inline-mail" href="mailto:asteroidescape.support@gmail.com">asteroidescape.support@gmail.com</a>
+        </p>
+      </article>
+
+      <div class="two-col">
+        <article class="card">
+          <div class="section-label">About</div>
+          <h2>The Game</h2>
+          <p>
+            Asteroid Escape: Space Run is a fast-paced arcade game where you control a rocket,
+            dodge incoming meteors, and try to survive as long as possible.
+          </p>
+        </article>
+
+        <article class="card">
+          <div class="section-label">Information</div>
+          <h2>What We Use</h2>
+          <ul>
+            <li>Google AdMob for advertising</li>
+            <li>No account creation or login required</li>
+            <li>Support contact by email</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <div class="footer">
+      © 2026 Asteroid Escape: Space Run • All rights reserved
+    </div>
+  </main>
+</body>
+</html>
